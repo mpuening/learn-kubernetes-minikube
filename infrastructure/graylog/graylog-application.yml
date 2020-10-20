@@ -1,0 +1,31 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: graylog-application
+spec:
+  selector:
+    matchLabels:
+      service: graylog-application
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        service: graylog-application
+    spec:
+      containers:
+      - name: graylog3
+        image: graylog/graylog:3.2
+        env:
+        - name: GRAYLOG_PASSWORD_SECRET
+          value: GRAYLOG_PASSWORD_SECRET_VALUE
+        - name: GRAYLOG_ROOT_PASSWORD_SHA2
+          value: GRAYLOG_ROOT_PASSWORD_SHA2_VALUE
+        - name: GRAYLOG_HTTP_EXTERNAL_URI
+          value: GRAYLOG_HTTP_EXTERNAL_URI_VALUE
+        - name: GRAYLOG_ELASTICSEARCH_HOSTS
+          value: http://graylog-elasticsearch:9200
+        - name: GRAYLOG_MONGODB_URI
+          value: mongodb://graylog-mongodb:27017/graylog
+        ports:
+        - containerPort: 9000
+        - containerPort: 12201

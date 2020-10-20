@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: spring-boot-deployment
+spec:
+  selector:
+    matchLabels:
+      app: spring-boot-app
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: spring-boot-app
+    spec:
+      containers:
+      - name: spring-boot-app
+        image: "localhost:5000/spring-boot-app:latest"
+        imagePullPolicy: Always
+        env:
+        - name: SPRING_PROFILES_ACTIVE
+          value: cloud
+        volumeMounts:
+        - name: application-config-volume
+          mountPath: "/deployment/config/" 
+          readOnly: true
+        - name: application-log-volume
+          mountPath: "/tmp/logs"
+        ports:
+        - containerPort: 8080
+#        readinessProbe:
+#          httpGet:
+#            scheme: HTTP
+#            path: /examples/index.html
+#            port: 8080
+#            httpHeaders:
+#            - name: Accept
+#              value: text/html
+#          initialDelaySeconds: 5
+#          periodSeconds: 3
+#          timeoutSeconds: 60
+#        livenessProbe:
+#          httpGet:
+#            scheme: HTTP
+#            path: /examples/index.html
+#            port: 8080
+#            httpHeaders:
+#            - name: Accept
+#              value: text/html
+#          initialDelaySeconds: 60
+#          periodSeconds: 30
+      volumes:
+      - name: application-config-volume
+        configMap:
+          name: spring-boot-config-map
+          items:
+          - key: application.yml
+            path: application.yml
+      - name: application-log-volume
+        persistentVolumeClaim:
+          claimName: spring-boot-persistent-volume-claim

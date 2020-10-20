@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: "spring-boot-app"
+
+  cloud:
+    kubernetes:
+      config:
+        enabled: true
+        paths: /deployment/config/application.yml

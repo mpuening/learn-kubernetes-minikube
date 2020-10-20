@@ -1,0 +1,19 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: graylog-test-job
+spec:
+  schedule: "*/1 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: graylog-test-curl-job
+            image: alpine:3.11
+            args:
+            - /bin/sh
+            - -c
+            - apk add curl; curl -XPOST http://graylog-application:12201/gelf -p0 -d '{"short_message":"Ping message from cron job...", "host":"graylog-test-job"}'
+          restartPolicy: OnFailure
+

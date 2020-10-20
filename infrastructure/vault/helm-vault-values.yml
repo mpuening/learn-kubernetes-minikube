@@ -1,0 +1,8 @@
+server:
+  affinity: ""
+  ha:
+    enabled: true
+ui:
+  enabled: true
+  serviceType: NodePort
+  serviceNodePort: 30820

@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: myapp-deployment
+spec:
+  selector:
+    matchLabels:
+      app: myapp
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: myapp
+    spec:
+#      nodeSelector:
+#        laptopType: MacBook
+      containers:
+      - name: myapp
+        image: myapp:latest
+        imagePullPolicy: Never
+        ports:
+        - containerPort: 8080
+#        readinessProbe:
+#          httpGet:
+#            scheme: HTTP
+#            path: /examples/index.html
+#            port: 8080
+#            httpHeaders:
+#            - name: Accept
+#              value: text/html
+#          initialDelaySeconds: 5
+#          periodSeconds: 3
+#          timeoutSeconds: 60
+#        livenessProbe:
+#          httpGet:
+#            scheme: HTTP
+#            path: /examples/index.html
+#            port: 8080
+#            httpHeaders:
+#            - name: Accept
+#              value: text/html
+#          initialDelaySeconds: 60
+#          periodSeconds: 30
